@@ -1,7 +1,3 @@
-/* 
-  WORKBENCH URL: https://bksdevsite.sharepoint.com/_layouts/15/workbench.aspx 
-*/
-
 //#region [imports]
 
   import * as React from 'react';
