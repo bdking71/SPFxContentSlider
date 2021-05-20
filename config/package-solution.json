@@ -1,0 +1,34 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "content-slider-sp-fx-client-side-webpart-client-side-solution",
+    "id": "b9074724-ed7c-493b-bb0d-7ccb686853d0",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "isDomainIsolated": false,
+    "features": [{
+      "title": "Content Slider Features",
+      "description": "Feature provisions the neccessary list to make the Content SLider SPFx Webpart work. ",
+      "id": "02437947-ed22-4834-ac55-fd65ae5fa755",    
+      "version": "2021.02.11.1440",
+      "assets": {
+        "elementManifests": [
+          "elements.xml"
+        ],
+        "elementFiles":[
+          "schema.xml"
+        ]
+      }
+    }],
+    "developer": {
+      "name": "Bryan King",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": ""
+    }
+  },
+  "paths": {
+    "zippedPackage": "solution/content-slider-sp-fx-client-side-webpart.sppkg"
+  }
+}
