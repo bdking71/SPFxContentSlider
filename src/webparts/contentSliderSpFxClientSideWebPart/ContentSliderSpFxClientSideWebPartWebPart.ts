@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 /* 
   WORKBENCH URL: /_layouts/15/workbench.aspx 
 */
 
-=======
->>>>>>> f746cfe1ed29550c41d420ee0faf694ac577f037
 //#region [imports]
 
   import * as React from 'react';
@@ -46,6 +43,8 @@ export default class ContentSliderSpFxClientSideWebPartWebPart
       ReactDom.unmountComponentAtNode(this.domElement);
     }
 
+    // @ts-ignore
+    // https://dreamsof.dev/2020-09-21-typescript-upgrade-breaking-dataversion-get-override-spfx11/
     protected get dataVersion(): Version {
       return Version.parse('1.0');
     }
