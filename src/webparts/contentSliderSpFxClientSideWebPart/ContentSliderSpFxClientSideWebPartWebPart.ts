@@ -1,5 +1,5 @@
 /* 
-  WORKBENCH URL: https://bksdevsite.sharepoint.com/_layouts/15/workbench.aspx 
+  WORKBENCH URL: /_layouts/15/workbench.aspx 
 */
 
 //#region [imports]

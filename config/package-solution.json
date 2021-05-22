@@ -1,16 +1,16 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "content-slider-sp-fx-client-side-webpart-client-side-solution",
-    "id": "b9074724-ed7c-493b-bb0d-7ccb686853d0",
-    "version": "1.0.0.0",
+    "name": "SPFx Content Slider",
+    "id": "ad2711c2-a7bb-45f9-ad07-d8b50c4012f3",
+    "version": "2021.05.21.1011",
     "includeClientSideAssets": true,
     "isDomainIsolated": false,
     "features": [{
-      "title": "Content Slider Features",
+      "title": "Features related to the content slider",
       "description": "Feature provisions the neccessary list to make the Content SLider SPFx Webpart work. ",
-      "id": "02437947-ed22-4834-ac55-fd65ae5fa755",    
-      "version": "2021.02.11.1440",
+      "id": "9935efd6-d29e-4a85-8d9d-d5702adf4be7",    
+      "version": "2021.05.21.1011",
       "assets": {
         "elementManifests": [
           "elements.xml"
@@ -22,13 +22,13 @@
     }],
     "developer": {
       "name": "Bryan King",
-      "websiteUrl": "",
+      "websiteUrl": "bdking71.wordpress.com",
       "privacyUrl": "",
       "termsOfUseUrl": "",
       "mpnId": ""
     }
   },
   "paths": {
-    "zippedPackage": "solution/content-slider-sp-fx-client-side-webpart.sppkg"
+    "zippedPackage": "solution/contentSlider.sppkg"
   }
 }

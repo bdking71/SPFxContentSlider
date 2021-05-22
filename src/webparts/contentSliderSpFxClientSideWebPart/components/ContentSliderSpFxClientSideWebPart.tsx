@@ -1,5 +1,5 @@
 /* 
-  WORKBENCH URL: https://bksdevsite.sharepoint.com/_layouts/15/workbench.aspx 
+  WORKBENCH URL: /_layouts/15/workbench.aspx 
 
   npm install react-html-parser --save
   npm install @pnp/sp --save
@@ -12,16 +12,12 @@
   import styles from './ContentSliderSpFxClientSideWebPart.module.scss';
   import { IContentSliderSpFxClientSideWebPartProps } from './IContentSliderSpFxClientSideWebPartProps';
   import { escape } from '@microsoft/sp-lodash-subset';
-
   import { sp } from "@pnp/sp";
   import { Web } from "@pnp/sp/webs";
   import "@pnp/sp/lists";
   import "@pnp/sp/items";
   import { IWeb, IWebInfo } from '@pnp/sp/webs';
-
   import parse from 'react-html-parser';
-
-
 //#endregion
 
 //#region [interfaces]
@@ -77,14 +73,30 @@ export default class ContentSliderSpFxClientSideWebPart
 
   //#endregion
 
-  //#region [hooks]
+  //#region [React Lifecycle Methods]
 
     public componentDidMount() {
-      this.getData(); 
+      this.getData();
+      this.setNav(); 
     }
 
   //#endregion
 
+  //#region [Methods]
+
+    private setNav = () => {
+      try {
+        document.getElementsByName("slider_nav").forEach((item: any) => {
+          item.style.outline = "6px solid lightgray"; 
+        });
+        document.getElementsByName("slider_name")[0].style.outline = "6px solid black"; 
+      } catch (err) {
+        //do nothing;
+      }
+    }
+  
+    //#endregion
+  
   //#region [components]
 
     private slide = ({props}) => {
@@ -95,15 +107,27 @@ export default class ContentSliderSpFxClientSideWebPart
       catch(err) {
         bgImage = 'url(' + defaultBackground + ')';
       }
-      return (
-        <div className={styles.contents} style={{backgroundImage: bgImage}}>
-          <h2 className={styles.caption}>{escape(props.Title)}</h2>
-          <p className={styles.text}>
-            {parse(props.Content)}<br />
-            <a href={props.Hyperlink.Url}>Read More...</a>
-          </p>
-        </div>
-      );     
+      try {
+        return (
+          <div className={styles.contents} style={{backgroundImage: bgImage}}>
+            <h2 className={styles.caption}>{escape(props.Title)}</h2>
+            <p className={styles.text}>
+              {parse(props.Content)}<br />
+              <a href={props.Hyperlink.Url}>Read More...</a>
+            </p>
+          </div>
+        );
+      } catch (err) {
+        return (
+          <div className={styles.contents} style={{backgroundImage: bgImage}}>
+            <h2 className={styles.caption}>{escape(props.Title)}</h2>
+            <p className={styles.text}>
+              {parse(props.Content)}
+            </p>
+          </div>
+        );
+      }
+           
     }
 
     private slideContainer = ({children}) => {
@@ -124,22 +148,16 @@ export default class ContentSliderSpFxClientSideWebPart
         const x = (100 / this.state.data.length) * (radioID - 1);
         document.getElementById('slider_inner').style.transform = "translateX(-" + x +"%)";
         let cnt: number = 0;        
-        this.state.data.map((item: iSPList) => {
-          document.getElementById("radio"+item.Id).style.outline = "6px solid white";
+        document.getElementsByName("slider_nav").forEach((item: any) => {
+          item.style.outline = "6px solid white";
         });
-        document.getElementById("radio"+id).style.outline = "6px solid gray";
+        document.getElementById("radio"+id).style.outline = "6px solid black";
       };
 
-      if (isFirstMarked == false) { 
-        isFirstMarked = true; 
-        return (
-          <input type="radio" key={id} id={"radio"+id} name="slider" title={caption}  style={{outline: '6px solid gray'}} className={styles.navigation} onClick={() => clickHandler(id)} />
-        ); 
-       } else {
-        return (
-          <input type="radio" key={id} id={"radio"+id} name="slider" title={caption}  checked={false} className={styles.navigation} onClick={() => clickHandler(id)} />
-        ); 
-      }
+      return (
+        <input type="radio" key={id} id={"radio"+id} name="slider_nav" title={caption}  checked={false} className={styles.navigation} onClick={() => clickHandler(id)} />
+      ); 
+      
     }
 
   //#endregion
@@ -148,15 +166,16 @@ export default class ContentSliderSpFxClientSideWebPart
   
     public render(): 
       React.ReactElement<IContentSliderSpFxClientSideWebPartProps> {
-  
+        let cnt: number = 0; 
         const innerWidth: string = (this.state.data.length * 100) + "%";  
         
         return (
           <div className={ styles.contentSliderSpFxClientSideWebPart }>
             <this.slideContainer>
               {this.state.data.map((item: iSPList) => {
+                cnt++; 
                 return (
-                  <this.slideNav id={item.Id} caption={item.Title} />
+                  <this.slideNav id={cnt} caption={item.Title} />
                 );
               })}
               <this.slideInner divSize={innerWidth}>
@@ -178,7 +197,14 @@ export default class ContentSliderSpFxClientSideWebPart
 
   private async getData()  {
     const spWeb = Web(this.props.gThis.context.pageContext.web.absoluteUrl);
-    const items: any[] = await spWeb.lists.getByTitle("Slides").items.select("Id", "Title", "Content", "Hyperlink", "AttachmentFiles").expand("AttachmentFiles").top(4).orderBy("Id", true).get();
+    const items: any[] = await spWeb.lists.getByTitle("Slides")
+      .items
+      .select("Id", "Title", "Content", "Hyperlink", "AttachmentFiles")
+      .expand("AttachmentFiles")
+      .filter("Published eq 1")
+      .top(5)
+      .orderBy("SortOrder", true)
+      .get();
     this.setState({data: items});
   }
 
