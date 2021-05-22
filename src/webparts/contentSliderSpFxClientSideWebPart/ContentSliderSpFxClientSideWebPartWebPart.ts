@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 /* 
   WORKBENCH URL: /_layouts/15/workbench.aspx 
 */
 
+=======
+>>>>>>> f746cfe1ed29550c41d420ee0faf694ac577f037
 //#region [imports]
 
   import * as React from 'react';
